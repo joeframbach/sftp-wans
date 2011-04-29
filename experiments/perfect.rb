@@ -6,13 +6,17 @@ config ack_drop_rate 0.0
 config timeout 0.2
 HEREDOC
 
-window_sizes = [8, 24]
-frame_sizes = [512, 2048]
+profiles = [
+"config window_size 8
+config frame_size 512",
+"config window_size 24
+config frame_size 2048"
+]
 
 # Test Commands
 commands  = [
 "get 1k",
-"get 10k"
+"get 10k",
 "get 100k"
 ]
 
@@ -21,16 +25,13 @@ open frambach_server
 rcd server_dir
 lcd client_dir
 #{config}
-config
 HEREDOC
 
-window_sizes.each do |window_size|
-  puts "config window_size #{window_size}"
-
-frame_sizes.each do |frame_size|
-  puts "config frame_size #{frame_size}"
+profiles.each do |profile|
+  puts profile
 
 commands.each do |command|
+  puts "config"
   6.times do
     puts "clear_stats"
     puts command
@@ -38,8 +39,7 @@ commands.each do |command|
   end
 end #command
 
-end #frame_size
-end #window_size
+end #profile
 
 puts "close"
 puts "bye"
