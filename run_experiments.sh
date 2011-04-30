@@ -1,2 +1,10 @@
-ruby experiments/selective_repeat_experiments.rb | ./run_client.rb client_config.yml | grep "{" > results/selective_repeat_results &
-ruby experiments/go_back_experiments.rb | ./run_client.rb client_config.yml | grep "{" > results/go_back_results &
+mkdir -p client_dir
+mkdir -p server_dir
+dd if=/dev/urandom of=server_dir/1k bs=1024 count=1
+dd if=/dev/urandom of=server_dir/10k bs=1024 count=10
+dd if=/dev/urandom of=server_dir/100k bs=1024 count=100
+
+experiments/frame_size_perfect.rb | ./run_client.rb config.yml > results/frame_size_perfect &
+experiments/frame_size_unreliable.rb | ./run_client.rb config.yml > results/frame_size_unreliable &
+experiments/window_size_perfect.rb | ./run_client.rb config.yml > results/window_size_perfect &
+experiments/window_size_unreliable.rb | ./run_client.rb config.yml > results/window_size_unreliable &
